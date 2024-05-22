@@ -1,0 +1,38 @@
+#!/usr/bin/env bash
+
+# Function to count the number of files in the current directory
+count_files() {
+    local count=$(ls -1 | wc -l)
+    echo "$count"
+}
+
+# Main function
+guessing_game() {
+    local num_files=$(count_files)  # Get the number of files in the current directory
+    local guess=-1                   # Initialize guess variable
+    local correct_guess=false        # Flag to track if the guess is correct
+
+    echo "Welcome to the Guessing Game!"
+    echo "How many files are in the current directory?"
+
+    while [ "$correct_guess" = false ]; do
+        read -p "Enter your guess: " guess   # Prompt the user for a guess
+
+        if ! [[ "$guess" =~ ^[0-9]+$ ]]; then  # Check if input is a positive integer
+            echo "Invalid input. Please enter a positive integer."
+            continue
+        fi
+
+        if [ "$guess" -lt "$num_files" ]; then
+            echo "Too low! Try again."
+        elif [ "$guess" -gt "$num_files" ]; then
+            echo "Too high! Try again."
+        else
+            echo "Congratulations! You guessed correctly!"
+            correct_guess=true
+        fi
+    done
+}
+
+# Call the main function
+guessing_game
